@@ -1,0 +1,13 @@
+[env]
+# v8-coroutine-sys links a V8 carrying the coroutine-local patch; stock prebuilt
+# archives fail to link (missing v8_coroutine_*). The v8 crate's build script
+# downloads the patched archive and its binding from this release of the
+# ngot/rusty_v8 fork (branch `coroutine`, see its coroutine/README.md).
+# A project that depends on these crates sets the same two variables in its own
+# .cargo/config.toml, since Cargo reads only the building workspace's config.
+RUSTY_V8_MIRROR = "https://github.com/ngot/rusty_v8/releases/download"
+RUSTY_V8_MIRROR_TAG = "v152.2.0-coroutine.1"
+
+[target.x86_64-pc-windows-msvc]
+# The patched V8 archive, like rusty_v8's, uses LIBCMT: match its static C runtime.
+rustflags = ["-C", "target-feature=+crt-static"]

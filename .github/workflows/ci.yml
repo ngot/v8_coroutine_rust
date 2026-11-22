@@ -1,0 +1,58 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: test (${{ matrix.target }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-22.04, target: x86_64-unknown-linux-gnu }
+          - { os: ubuntu-22.04-arm, target: aarch64-unknown-linux-gnu }
+          - { os: macos-14, target: aarch64-apple-darwin }
+          - { os: windows-2022, target: x86_64-pc-windows-msvc }
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install the toolchain
+        run: rustup show active-toolchain || rustup toolchain install
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ matrix.target }}-${{ hashFiles('Cargo.lock', '.cargo/config.toml', 'rust-toolchain.toml') }}
+      - run: cargo fmt --all -- --check
+        if: matrix.target == 'x86_64-unknown-linux-gnu'
+      - run: cargo clippy --locked --release --all-targets -- -D warnings
+      - run: cargo test --locked --release
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: test
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=${GITHUB_REF_NAME}
+          v8=$(sed -n 's/^RUSTY_V8_MIRROR_TAG = "\(.*\)"$/\1/p' .cargo/config.toml)
+          gh release create "$tag" --title "$tag" --notes "v8-coroutine and v8-coroutine-sys $tag, linking V8 release [$v8](https://github.com/ngot/rusty_v8/releases/tag/$v8)."

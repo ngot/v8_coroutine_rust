@@ -1,0 +1,19 @@
+[package]
+name = "v8-coroutine-sys"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+description = "rusty_v8 linked against the coroutine-local patched V8: the one V8 pin and the bindings to the patch's exports"
+readme = "README.md"
+# Not published to crates.io yet.
+publish = false
+
+[lib]
+path = "lib.rs"
+
+[dependencies]
+# The one exact pin: the patched archive is a v<this version>-coroutine.<n> release of the
+# ngot/rusty_v8 fork (branch `coroutine`), cut from this rusty_v8 tag.
+rusty_v8 = { package = "v8", version = "=152.2.0" }

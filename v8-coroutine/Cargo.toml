@@ -1,0 +1,20 @@
+[package]
+name = "v8-coroutine"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+description = "Stackful coroutines on one shared V8 isolate, each suspending and resuming in any order (needs the patched V8 of v8-coroutine-sys)"
+readme = "README.md"
+keywords = ["v8", "coroutine", "javascript", "isolate"]
+categories = ["api-bindings", "concurrency"]
+# Not publishable until v8-coroutine-sys is published.
+publish = false
+
+[dependencies]
+corosensei = "0.3.4"
+v8 = { package = "v8-coroutine-sys", path = "../v8-coroutine-sys", version = "0.3.0" }
+
+# Self-contained: ships on its own, so it takes no workspace lints.
+[lints]
