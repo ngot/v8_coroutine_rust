@@ -97,7 +97,9 @@ fn samples_a_coroutine_other_than_the_one_that_started_the_profile() {
     drop(session);
     drop(inspector);
 
-    // About 3,000 samples land in `hot`; before the fix there were none.
+    // About 3,000 samples land in `hot` on bare metal and a few hundred on a shared macOS VM, whose
+    // sampler gets fewer ticks; before the fix there were none, so 1% of the bare-metal count
+    // still tells the two apart.
     let hot = hits(&profile, "hot");
-    assert!(hot > 300, "only {hot} samples in the coroutine's `hot`");
+    assert!(hot >= 30, "only {hot} samples in the coroutine's `hot`");
 }

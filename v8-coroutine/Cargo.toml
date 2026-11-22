@@ -14,7 +14,7 @@ publish = false
 
 [dependencies]
 corosensei = "0.3.4"
-v8 = { package = "v8-coroutine-sys", path = "../v8-coroutine-sys", version = "0.3.0" }
+v8 = { package = "v8-coroutine-sys", path = "../v8-coroutine-sys", version = "0.3.1" }
 
 # Self-contained: ships on its own, so it takes no workspace lints.
 [lints]

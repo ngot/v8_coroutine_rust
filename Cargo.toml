@@ -3,7 +3,7 @@ resolver = "3"
 members = ["v8-coroutine", "v8-coroutine-sys"]
 
 [workspace.package]
-version = "0.3.0"
+version = "0.3.1"
 edition = "2024"
 license = "MIT"
 repository = "https://github.com/ngot/v8_coroutine_rust"

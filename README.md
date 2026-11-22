@@ -20,8 +20,8 @@ Depend on a release tag of this repository, and name the matching V8 release in 
 ```toml
 # Cargo.toml
 [dependencies]
-v8 = { package = "v8-coroutine-sys", git = "https://github.com/ngot/v8_coroutine_rust", tag = "v0.3.0" }
-v8-coroutine = { git = "https://github.com/ngot/v8_coroutine_rust", tag = "v0.3.0" }
+v8 = { package = "v8-coroutine-sys", git = "https://github.com/ngot/v8_coroutine_rust", tag = "v0.3.1" }
+v8-coroutine = { git = "https://github.com/ngot/v8_coroutine_rust", tag = "v0.3.1" }
 ```
 
 ```toml
@@ -39,7 +39,7 @@ Released targets: `x86_64-unknown-linux-gnu`, `aarch64-unknown-linux-gnu`, `aarc
 
 | This repo | rusty_v8  | V8 release             | Patch version |
 | --------- | --------- | ---------------------- | ------------- |
-| `v0.3.0`  | `152.2.0` | `v152.2.0-coroutine.1` | 13            |
+| `v0.3.1`  | `152.2.0` | `v152.2.0-coroutine.1` | 13            |
 
 A patch change is released from the fork first, then this repository bumps `RUSTY_V8_MIRROR_TAG` and `PATCH_VERSION` together and tags a new version.
 
